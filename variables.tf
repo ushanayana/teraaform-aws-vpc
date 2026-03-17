@@ -29,7 +29,7 @@ variable "vpc_tags" {
     default = {}
 
 }
-
+### igw tags ####
 variable "igw_tags" {
     type = map 
     default = {}
