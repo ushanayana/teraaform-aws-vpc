@@ -12,18 +12,6 @@ resource "aws_vpc" "main" {
   )
 }
 
-resource "aws_db_subnet_group" "default" {
-  name       = "${local.resource_name}"
-  subnet_ids = aws_subnet.database[*].id
-
-  tags = merge(
-    var.common_tags,
-    var.database_subnet_group_tags,
-  {
-    Name = "${local.resource_name}"
-  }
-  )
-}
 
 resource "aws_internet_gateway" "gw" {
   vpc_id = aws_vpc.main.id
@@ -85,6 +73,19 @@ resource "aws_subnet" "database" {
     var.database_subnet_cidr_tags,
    {
     Name = "${local.resource_name}-database-${local.az_names[count.index]}"
+  }
+  )
+}
+
+resource "aws_db_subnet_group" "default" {
+  name       = "${local.resource_name}"
+  subnet_ids = aws_subnet.database[*].id
+
+  tags = merge(
+    var.common_tags,
+    var.database_subnet_group_tags,
+  {
+    Name = "${local.resource_name}"
   }
   )
 }
